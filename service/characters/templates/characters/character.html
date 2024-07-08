@@ -1,0 +1,194 @@
+{% extends 'main/template.html' %}
+{% load static %}
+
+{% block page-description %}Guide for {{ character.capitalize }}. Move list, combos and tips.{% endblock %}
+
+{% block title %}
+{{ character.capitalize }}
+{% endblock %}
+
+{% block content %}
+<div class="page">
+    
+    <!-- TITLE SCREEN WITH PICTURE AND (LINKS, INFO?) -->
+    <div class="character-title-screen">    
+        <h2>{{ character }}</h2>
+        <div class="character-profile container">
+            <div class="character-profile-image">
+                <img src="{% static 'main/img/characters/'|add:character|add:'.png' %}" alt="">
+            </div>
+            <div class="character-page-links">
+                <h3>Contents</h3>
+                <ul>
+                    <li><a href="#move-list">Move List</a></li>
+                    <li><a href="#key-moves">Key Moves</a></li>
+                    <li><a href="#combos">Tips And Combos</a></li>
+                    <ul>
+                        {% for i in combos %}
+                            <li><a href="#{{ i.combo_name }}">{{ i.combo_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- FRAME DATA -->
+    <div class="move-list container" id="move-list">
+        <h3>Move List</h3>
+        <br>
+        {% if not data %}
+            <p>No framedata yet.</p>
+        {% else %}
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="normals-tab" data-bs-toggle="tab" data-bs-target="#normals-tab-pane" type="button" role="tab" aria-controls="normals-tab-pane" aria-selected="true">BASIC ATTACKS</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                <button class="nav-link" id="combos-tab" data-bs-toggle="tab" data-bs-target="#combos-tab-pane" type="button" role="tab" aria-controls="combos-tab-pane" aria-selected="false">COMBO ATTACKS</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                <button class="nav-link" id="specials-tab" data-bs-toggle="tab" data-bs-target="#specials-tab-pane" type="button" role="tab" aria-controls="specials-tab-pane" aria-selected="false">SPECIAL MOVES</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                <button class="nav-link" id="powers-tab" data-bs-toggle="tab" data-bs-target="#powers-tab-pane" type="button" role="tab" aria-controls="powers-tab-pane" aria-selected="false">CHARACTER POWER</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="normals-tab-pane" role="tabpanel" aria-labelledby="normals-tab" tabindex="0">
+                    {% include 'characters/frame-data-table.html' with move_type='Normal' %}
+                </div>
+                <div class="tab-pane fade" id="combos-tab-pane" role="tabpanel" aria-labelledby="combos-tab" tabindex="0">
+                    {% include 'characters/frame-data-table.html' with move_type='Combo' %}
+                </div>
+                <div class="tab-pane fade" id="specials-tab-pane" role="tabpanel" aria-labelledby="specials-tab" tabindex="0">
+                    {% include 'characters/frame-data-table.html' with move_type='Special' %}
+                </div>
+                <div class="tab-pane fade" id="powers-tab-pane" role="tabpanel" aria-labelledby="powers-tab" tabindex="0">
+                    {% include 'characters/frame-data-table.html' with move_type='Power' %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="container" id="key-moves">
+        <h3>Key Moves</h3>
+        <table class="move-description">
+            {% if not key_moves %}
+                <br>
+                <p>No moves yet.</p>
+            {% else %}
+                {% for i in key_moves %}
+                    <tr>
+                        <td>
+                            <span class="move-input">
+                                {% for j in i.move_input.split %}
+                                    {% if j in buttons %}
+                                    <img src="{% static 'main/img/input-buttons/none/'|add:j|add:'.png' %}" alt="">
+                                    {% else %}
+                                        {{ j }}
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                        </td>
+                        <td>{{ i.move_description }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+
+
+
+    <div class="container" id="combos">
+        <h3>Tips And Combos</h3>
+        <br>
+        {% if not combos %}
+            <p>No tips yet.</p>
+        {% else %}
+            {% for i in combos %}
+            <div class="combo-container" id="{{i.combo_name}}">
+                <h4>{{i.combo_name}}</h4>
+                <div class="move-details">
+                    <!-- <video width="480" height="270" controls autoplay muted loop>
+                        <source src="{% static 'main/img/videos/' %}{{i.character_name}}_combo_{{i.combo_number}}.mp4 " type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video> -->
+                    <div class="move-description">
+                        <table>
+                            {% if i.combo_bars %}
+                            <tr>
+                                <td>Meter</td>
+                                <td>
+                                    <span class="plus-minus">
+                                        {% for bars in ''|center:i.combo_bars %}
+                                        <img src="{% static 'main/img/meter-bar.png' %}" alt="" class="meter-bar-img">
+                                        {% endfor %}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endif %}
+
+                            {% if i.side_switch %}
+                            <tr>
+                                <td>Side Switch</td>
+                                <td>
+                                    <span class="plus-minus"><img src="{% static 'main/img/' %}{{i.side_switch}}.png" alt=""></span>
+                                </td>
+                            </tr>
+                            {% endif %}
+
+                            {% if i.corner %}
+                            <tr>
+                                <td>Corner</td>
+                                <td>
+                                    <span class="plus-minus"><img src="{% static 'main/img/' %}{{i.corner}}.png" alt=""></span>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td>Difficulty</td>
+
+                                {% if i.difficulty == 1 %}
+                                <td style="color:rgb(22,219,0)">
+                                    Easy
+                                </td>
+                                    
+                                {% elif i.difficulty == 2 %}
+                                <td style="color:orange">
+                                    Medium
+                                </td>
+                                    
+                                {% elif i.difficulty == 3 %}
+                                <td style="color:red">
+                                    Hard
+                                </td>
+                                    
+                                {% endif %}
+
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <br>
+                <span class="move-input">
+                    {% for j in i.combo_input.split %}
+                        {% if j in buttons %}
+                        <img src="{% static 'main/img/input-buttons/none/'|add:j|add:'.png' %}" alt="">
+                        {% else %}
+                            {{ j }}
+                        {% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+            {% endfor %}
+        {% endif %}
+    <!-- <p>Double <span class="move-input">down 2</span> is optimal, trust me.</p> -->
+    
+    <!-- <h3>Tips</h3>
+    <p>It doesn't matter how good you are, it's about how bad your enemy is. (c) Bruce Lee</p> -->
+    </div>
+
+
+</div>
+{% endblock %}

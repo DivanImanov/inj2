@@ -1,0 +1,24 @@
+{% extends 'main/template.html' %}
+{% load static %}
+
+{% block page-description %}Injustice 2 Guides. Move lists, combos and tips for characters.{% endblock %}
+
+{% block title %}
+Characters
+{% endblock %}
+
+{% block content %}
+<div class="page">
+    <h2>Characters</h2>
+    <br>
+
+    <div class="character-list">
+        <ul>
+            {% for i in data %}
+                <li><a href="{{ i.character_name }}"><img src="{% static 'main/img/characters/thumbs/'|add:i.character_name|add:'.jpg' %}" alt=""></a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+{% endblock %}

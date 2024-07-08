@@ -1,0 +1,44 @@
+{% load static %}
+    <table>
+        <tr>
+            <th>Move Name</th>
+            <th>Input</th>
+            <th>Move Type</th>
+            <th>Damage</th>
+            <th>Block Damage</th>
+            <th>Start-Up</th>
+            <th>Active</th>
+            <th>Recover</th>
+            <th>Block Adv</th>
+            <th>Hit Adv</th>
+            <th>Cancel</th>
+        </tr>
+        {% for i in data %}
+            {% if i.move_type == move_type %}
+                <tr {% if i.move_name == 'Meter Burn' %} class="meter-burn" {% endif %}>
+                    <td>{{ i.move_name }}</td>
+                    <!-- <td><span class="move-input">{{ i.move_input }}</span></td> -->
+                    <td>
+                        <span class="move-input">
+                            {% for j in i.move_input.split %}
+                                {% if j in buttons %}
+                                <img src="{% static 'main/img/input-buttons/none/'|add:j|add:'.png' %}" alt="">
+                                {% else %}
+                                    {{ j }}
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                    </td>
+                    <td>{{ i.move_level }}</td>
+                    <td>{{ i.damage }}</td>
+                    <td>{{ i.block_damage }}</td>
+                    <td>{{ i.start_up }}</td>
+                    <td>{{ i.active }}</td>
+                    <td>{{ i.recover }}</td>
+                    <td>{{ i.block_adv }}</td>
+                    <td>{{ i.hit_adv }}</td>
+                    <td>{{ i.cancel }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
