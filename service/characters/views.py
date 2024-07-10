@@ -3,6 +3,13 @@ from .models import MoveList, CharacterList, OptimalCombos, KeyMoves
 from django.views.generic import DetailView
 from django.http import Http404
 
+from .serializers import MoveListSerializer
+from rest_framework import generics
+# from rest_framework.renderers import JSONRenderer
+# from rest_framework.parsers import JSONParser
+# from rest_framework.filters import SearchFilter
+
+
 # Create your views here.
 
 # class CharacterDetailView(DetailView):
@@ -26,3 +33,19 @@ def character_page(request, character):
         key_moves = KeyMoves.objects.filter(character_name = character).order_by('pk')
         buttons = ['B', 'F', 'D', 'U', '1', '2', '3', '4', 'R1', 'R2', 'L1', 'L2', 'UF', 'UB', 'DF', 'DB']
         return render(request, 'characters/character.html', {'data': data, 'character': character, 'combos': combos, 'key_moves': key_moves, 'buttons': buttons})
+    
+
+class MoveListAPIView(generics.ListAPIView):
+
+    def get_queryset(self):
+        name = self.request.query_params.get('name')
+        if name:
+            queryset = MoveList.objects.filter(character_name=name)
+        else:
+            queryset = MoveList.objects.all()
+        return queryset
+    
+    serializer_class = MoveListSerializer
+    # render_classes = [JSONRenderer]
+    # parser_classes = [JSONParser]
+    # queryset = MoveList.objects.all()
