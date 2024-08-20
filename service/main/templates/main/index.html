@@ -10,7 +10,18 @@ Injustice 2 Guides
 <div class="page">
     <h2>News</h2>
     <br><br>
+    <hr>
+    {% for el in news %}
     <div class="news-article">
+        
+        <h4>{{ el.time_create|date:'N j, Y' }}</h4>
+        <br>
+        <p>{{ el.content|linebreaks }}</p>
+        <br>
+        <hr>
+    </div>
+    {% endfor %}
+    <!-- <div class="news-article">
         <hr>
         <h4>01.11.2023</h4>
         <br>
@@ -21,6 +32,6 @@ Injustice 2 Guides
             If you want to help, you can visit <a href="/help-the-project">this page.</a>
         </p>
         <hr>
-    </div>
+    </div> -->
 </div>
 {% endblock %}

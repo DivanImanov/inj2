@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import MoveList, CharacterList, OptimalCombos, KeyMoves
 from django.views.generic import DetailView
 from django.http import Http404
+from django.core.cache import cache
 
 from .serializers import MoveListSerializer
 from rest_framework import generics
@@ -19,7 +20,12 @@ from rest_framework import generics
 
 
 def index(request):
-    data = CharacterList.objects.order_by('position')
+    characters_cache = cache.get('characters_cache')
+    if characters_cache:
+        data = characters_cache
+    else:
+        data = CharacterList.objects.order_by('position')
+        cache.set('characters_cache', data, 30)
     return render(request, 'characters/index.html', {'data': data})
 
 

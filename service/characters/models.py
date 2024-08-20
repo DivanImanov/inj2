@@ -3,8 +3,8 @@ from django.db import models
 # Create your models here.
 
 class MoveList(models.Model):
-    character_name = models.CharField(max_length=20, blank=True, null=False)
-    move_name = models.CharField(max_length=30, blank=True, null=False)
+    character_name = models.CharField(max_length=20, blank=True, null=False, default='Someone')
+    move_name = models.CharField(max_length=30, blank=True, null=False, default='Some Move')
     move_input = models.CharField(max_length=30, blank=True, null=True)
     move_type = models.CharField(max_length=20, blank=True, null=True)
     move_level = models.CharField(max_length=15, blank=True, null=True)
@@ -40,9 +40,9 @@ class CharacterList(models.Model):
 
 
 class OptimalCombos(models.Model):
-    character_name = models.CharField(max_length=20, blank=True, null=False)
+    character_name = models.CharField(max_length=20, blank=True, null=False, default='Some')
     combo_number = models.SmallIntegerField(blank=True, null=True)
-    combo_name = models.CharField(max_length=30, blank=True, null=False)
+    combo_name = models.CharField(max_length=30, blank=True, null=False, default='Some')
     combo_input = models.TextField(blank=True, null=True)
     combo_bars = models.SmallIntegerField(blank=True, null=True)
     side_switch = models.BooleanField(blank=True, null=True)
