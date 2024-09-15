@@ -5,7 +5,8 @@ from django.contrib.auth import logout
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 from .models import HomeNew
-from .forms import AddPostForm
+from .forms import AddPostForm, ContactForm
+from .tasks import send_form
 
 # Create your views here.
 
@@ -36,8 +37,15 @@ class AddPost(CreateView):
 
 
 def about(request):
-    return render(request, 'main/about.html')
-
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            send_data = ''.join(['From:\n', form.cleaned_data['mail'], '\n\nText:\n', form.cleaned_data['text']])
+            send_form.delay(send_data)
+            return redirect('index')
+    else:
+        form = ContactForm()
+    return render(request, 'main/about.html', {'form': form})
 
 class LoginUser(LoginView):
     form_class = AuthenticationForm

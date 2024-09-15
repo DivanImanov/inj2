@@ -13,23 +13,38 @@ About
     <div class="about-info">
         <h3>What is this site?</h3>
         <p>This site was created as a hobby by NetherRealm games enjoyer to inspire new players to try Injustice 2.</p>
+        <p>On this site, you'll find frame data, optimal combos, and tips for characters.</p>
+        <p>I was inspired by <a href="https://kombatakademy.com" target="_blank">kombatakademy.com</a></p>
+        <p>Development is still in progress. All work is done by 1 man, so if you want updates, I recommend you to be patient :)</p>
         <!-- <p>If you want to participate in improving the site, you can visit <a href="/help-the-project">this page.</a></p> -->
     </div>
+    <br>
     <div class="contact-info">
-        <div class="contact-info">
-            <h3>Contact Information</h3>
-            <div class="contact-links">
-                <div>
-                    <i class="fa fa-envelope" aria-hidden="true"></i>
-                    Email:
-                    <a href="mailto:medved112001@gmail.com">medved112001@gmail.com</a>
-                </div>
-                <!-- <div class="contact-icons">
-                    1, 2, 3
-                </div> -->
-            </div>
+        <h3>Contact Information</h3>
+        <p>If you have some feedback, a question, or you found a bug, you can use the form below to text me.</p>
+        <details>
+            <summary>Press to open.</summary>
+            <br>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    {{ field }}
+                    <br>
+                {% endfor %}
+                <button type="submit">Send</button>
+            </form>
+        </details>
+        <div class="contact-links">
+            <!-- <div>
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                Email:
+                <a href="mailto:example@gmail.com">example@gmail.com</a>
+            </div> -->
+            <!-- <div class="contact-icons">
+                1, 2, 3
+            </div> -->
         </div>
     </div>
-    
 </div>
+<br><br>
 {% endblock %}

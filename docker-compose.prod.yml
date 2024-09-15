@@ -26,6 +26,39 @@ services:
     image: redis:7.0.5-alpine
     hostname: redis
 
+  worker:
+    build:
+      context: ./service
+    hostname: worker
+    env_file:
+      - ./.env.prod
+    entrypoint: celery
+    command: -A celery_app.app worker --loglevel=info
+    volumes:
+      - ./service:/service
+    links:
+      - redis
+    depends_on:
+      - redis
+      - database
+
+  flower:
+    build:
+      context: ./service
+    hostname: flower
+    env_file:
+      - ./.env.prod
+    entrypoint: celery
+    command: -A celery_app.app flower
+    volumes:
+      - ./service:/service
+    links:
+      - redis
+    depends_on:
+      - redis
+    ports:
+      - "5555:5555"
+
   nginx:
     build: ./nginx
     volumes:

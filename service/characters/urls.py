@@ -3,7 +3,7 @@ from . import views
 from rest_framework import routers
 
 urlpatterns = [
-    path('', views.index),
+    path('', views.index, name='characters'),
     path('<str:character>/', views.character_page),
     # path('<str:character_name>', views.CharacterDetailView.as_view())
     path('api/v1/movelist/', views.MoveListAPIView.as_view()),
